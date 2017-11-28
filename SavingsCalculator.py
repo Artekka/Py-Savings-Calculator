@@ -4,22 +4,20 @@ def calculateSavings():
     print('Please enter the number of weeks you expect to work:')
     weeks = int(input())
     savings = 0
-    taxBracket = float(weeklyIncome * weeks)
-    if (taxBracket > 418400): taxBracket = 0.396
-    elif (taxBracket >= 416700): taxBracket = 0.35
-    elif (taxBracket >= 191650): taxBracket = 0.33
-    elif (taxBracket >= 91900): taxBracket = 0.28
-    elif (taxBracket >= 37950): taxBracket = 0.25
-    elif (taxBracket >= 9325): taxBracket = 0.15
-    else: taxBracket = 0.10
-    taxedAmount = weeklyIncome * taxBracket
+    annualIncome = float(weeklyIncome * weeks)
+    taxBrackets = [(418400, 0.396), (416700, 0.35), (191650, 0.33), (91900, 0.28), (37950, 0.25), (9325, 0.15), (0, 0.10)] 
+    def determine_taxBracket(income):
+      return [tax for (tax_limits, tax) in taxBrackets if income > tax_limits][0]
+    user_taxBracket = determine_taxBracket(annualIncome)
+    taxedAmount = weeklyIncome * user_taxBracket
     netIncome = weeklyIncome - taxedAmount
     print("What percentage (%) of your income would you like to save each week?")
     wishToSave = int(input())
     savedPercent = float(wishToSave / 100)
     print("You have chosen to save: " + str(float(wishToSave)) + "%")
     print("Your net income per week is: $" + str(int(netIncome)))
-    print("Your tax bracket is: " + str(float(taxBracket)*100) + "%")
+    print("Your tax bracket is: " + str(float(user_taxBracket)*100) + "%")
+    x = 0
     for x in range(1, weeks+1):
         savings += float(netIncome)*savedPercent
     netIncome *= weeks
