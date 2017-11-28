@@ -11,7 +11,7 @@ def calculateSavings():
     elif (taxBracket >= 91900): taxBracket = 0.28
     elif (taxBracket >= 37950): taxBracket = 0.25
     elif (taxBracket >= 9325): taxBracket = 0.15
-    elif (taxBracket >= 0): taxBracket = 0.10
+    else: taxBracket = 0.10
     taxedAmount = weeklyIncome * taxBracket
     netIncome = weeklyIncome - taxedAmount
     print("What percentage (%) of your income would you like to save each week?")
