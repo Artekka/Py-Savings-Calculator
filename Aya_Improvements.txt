@@ -1,0 +1,60 @@
+Why reuse taxBracket?
+Shouldn't it be 
+if income > 418400:
+    taxBracket = 0.396
+Anyways, one solution is to chain ternary:
+taxBracket = 0.396 if income > 418400 else
+    0.35 if income > 416700 else
+    0.33 if income > 1916550 #else ...
+    
+Another is to map the lower bound like:
+taxValues = {418400: 0.396,
+ 416700: 0.35,
+ 191650: 0.33,
+ # ...
+}
+
+and loop through with 
+for salary, tax in taxValues:
+    if income > salary:
+        taxBracket = tax
+        break
+
+
+You'd have to make it an ordered list of pairs
+because dictionaries don't guarantee the order
+taxValues = [(418400, 0.396), (416700, 0.35), ...]
+
+>>> taxValues = [(418400, 0.396), (416700, 0.35), (191650, 0.33), (91900, 0.28), (37950, 0.25), (9325, 0.15), (0, 0.10)]
+>>> taxValues
+[(418400, 0.396), (416700, 0.35), (191650, 0.33), (91900, 0.28), (37950, 0.25), (9325, 0.15), (0, 0.1)]
+>>> def get_tax_bracket_for_income(income):
+...     return [tax for (salary, tax) in taxValues if income > salary][0]
+...
+>>> for income in range(20000, 800000, 50000):...     
+print "The tax bracket for " + str(income) + " is " + str(get_tax_bracket_for_income(income))
+...
+The tax bracket for 20000 is 0.15
+The tax bracket for 70000 is 0.25
+The tax bracket for 120000 is 0.28
+The tax bracket for 170000 is 0.28
+The tax bracket for 220000 is 0.33
+The tax bracket for 270000 is 0.33
+The tax bracket for 320000 is 0.33
+The tax bracket for 370000 is 0.33
+The tax bracket for 420000 is 0.396
+The tax bracket for 470000 is 0.396
+The tax bracket for 520000 is 0.396
+The tax bracket for 570000 is 0.396
+The tax bracket for 620000 is 0.396
+The tax bracket for 670000 is 0.396
+The tax bracket for 720000 is 0.396
+The tax bracket for 770000 is 0.396
+lgtm
+Throws an error if your income is < 0 though
+might want to change it to
+
+return [tax for (salary, tax) in taxValues if income > salary][0] if income > 0 else 0
+Probably better to use an ordereddict
+It displays intent better and you can use the one liner still
+List of pairs is messy
