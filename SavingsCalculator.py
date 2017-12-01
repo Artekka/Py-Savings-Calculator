@@ -5,9 +5,6 @@ def calculateSavings():
     weeks = int(input())
     savings = 0
     annualIncome = float(weeklyIncome * weeks)
-    taxBrackets = [(418400, 0.396), (416700, 0.35), (191650, 0.33), (91900, 0.28), (37950, 0.25), (9325, 0.15), (0, 0.10)] 
-    def findTaxBracket(income):
-      return [tax for (tax_limits, tax) in taxBrackets if income > tax_limits][0]
     userTaxBracket = findTaxBracket(annualIncome)
     taxedAmount = weeklyIncome * userTaxBracket
     netIncome = weeklyIncome - taxedAmount
@@ -22,4 +19,9 @@ def calculateSavings():
         savings += float(netIncome)*savedPercent
     netIncome *= weeks
     print("In {0} weeks you will have saved ${1:,} from ${2:,}.".format(str(x),int(savings),int(netIncome)))
+    
+def findTaxBracket(income):
+  taxBrackets = [(418400, 0.396), (416700, 0.35), (191650, 0.33), (91900, 0.28), (37950, 0.25), (9325, 0.15), (0, 0.10)] 
+  return [tax for (tax_limits, tax) in taxBrackets if income > tax_limits][0]
+
 calculateSavings()
